@@ -74,6 +74,25 @@
             width: 100%;
             margin-top: auto;
         }
+
+           @media (max-width: 576px) {
+            .container {
+                padding: 5rem 0.5rem 1rem;
+            }
+
+            h1 {
+                font-size: 3rem; 
+            }
+
+            p.lead {
+                font-size: 1.2rem; 
+            }
+
+            .btn-primary {
+                padding: 1rem 2rem;
+                font-size: 1.2rem;
+            }
+        }
     </style>
 </head>
 <body>
