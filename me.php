@@ -10,12 +10,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <!-- Custom Violet Minimalist CSS -->
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
         body {
             background-color: #2a1b3d;
             color: #e0d0ff;
             font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
+            display: flex;
+            flex-direction: column;
         }
         .navbar {
             background-color: #3c2f5c;
@@ -48,6 +53,7 @@
             max-width: 1000px;
             padding: 2rem 1rem;
             margin-top: 60px; /* Adjust for fixed navbar */
+            flex: 1 0 auto;
         }
         .activity-section {
             margin-top: 2rem;
@@ -132,6 +138,7 @@
             color: #c8b6ff;
             padding: 1rem;
             text-align: center;
+            flex-shrink: 0;
         }
     </style>
 </head>
@@ -173,17 +180,51 @@
             <div class="row">
                 <?php
                 $labs = [
-                    'Lab 1', 'Lab 2', 'Lab 3', 'Lab 4',
-                    'Lab 5', 'Lab 6', 'Lab 7', 'Lab 8'
+                    'Lab 1' => ['VariableChallenge.php', 'VCwithDesign.php'],
+                    'Lab 2' => ['challenge1.php', 'challenge2.php', 'challenge3.php'],
+                    'Lab 3' => ['challenge1.php', 'challenge2.php', 'challenge3.php'],
+                    'Lab 4' => ['challenge_lab4.php'],
+                    'Lab 5' => ['challengelab5.php'],
+                    'Lab 6' => ['challenge1.php', 'challenge2.php', 'challenge3.php'],
+                    'Lab 7' => ['challenge1.php', 'challenge2.php'],
+                    'Lab 8' => ['main.php', 'result.php']
                 ];
 
-                foreach ($labs as $lab) {
+                foreach ($labs as $labName => $files) {
+                    $modalId = strtolower(str_replace(' ', '', $labName)) . 'Modal';
                     echo '<div class="col-md-3 mb-3">';
                     echo '<div class="card">';
-                    echo '<div class="card-header">' . $lab . '</div>';
+                    echo '<div class="card-header">' . $labName . '</div>';
                     echo '<div class="card-body">';
-                    echo '<a href="' . strtolower(str_replace(' ', '', $lab)) . '/" class="btn btn-primary activity-btn">Explore</a>';
+                    echo '<button type="button" class="btn btn-primary activity-btn" data-bs-toggle="modal" data-bs-target="#' . $modalId . '">Explore</button>';
                     echo '</div></div></div>';
+
+                    // Modal for each lab
+                    echo '<div class="modal fade" id="' . $modalId . '" tabindex="-1" aria-labelledby="' . $modalId . 'Label" aria-hidden="true">';
+                    echo '<div class="modal-dialog">';
+                    echo '<div class="modal-content">';
+                    echo '<div class="modal-header">';
+                    echo '<h5 class="modal-title" id="' . $modalId . 'Label">' . $labName . ' Files</h5>';
+                    echo '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
+                    echo '</div>';
+                    echo '<div class="modal-body">';
+                    if (empty($files)) {
+                        echo '<p>No files available.</p>';
+                    } else {
+                        echo '<ul>';
+                        foreach ($files as $file) {
+                            $hasDesign = ($file === 'VCwithDesign.php') ? ' (with design)' : '';
+                            echo '<li><a href="' . strtolower(str_replace(' ', '', $labName)) . '/' . $file . '" target="_blank">' . pathinfo($file, PATHINFO_FILENAME) . '</a>' . $hasDesign . '</li>';
+                        }
+                        echo '</ul>';
+                    }
+                    echo '</div>';
+                    echo '<div class="modal-footer">';
+                    echo '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>';
+                    echo '</div>';
+                    echo '</div>';
+                    echo '</div>';
+                    echo '</div>';
                 }
                 ?>
             </div>

@@ -37,6 +37,7 @@
             color: #c8b6ff;
             font-weight: 500;
             margin-left: 1rem;
+            transition: color 0.3s ease;
         }
         .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
             color: #e0d0ff;
@@ -86,7 +87,7 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a ligerclass="nav-link" href="landing.php">Home</a>
+                        <a class="nav-link" href="landing.php">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="me.php">Dashboard</a>

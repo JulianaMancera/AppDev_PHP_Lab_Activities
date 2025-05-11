@@ -17,7 +17,7 @@ $current_year = date("Y");
     <meta property="og:description" content="Interactive PHP lab activities to boost your coding skills.">
     <meta property="og:type" content="website">
     <!-- Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' https://cdn.jsdelivr.net">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://cdn.jsdelivr.net https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; img-src 'self'; connect-src 'self'">
     <title><?php echo $site_name; ?> - Welcome</title>
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -43,8 +43,9 @@ $current_year = date("Y");
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+            margin: 0;
         }
 
         .navbar {
@@ -54,53 +55,43 @@ $current_year = date("Y");
             top: 0;
             width: 100%;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
-
         .navbar-brand {
             color: var(--text-primary);
-            font-weight: 700;
-            font-size: 1.8rem;
-            transition: color 0.3s ease;
+            font-weight: 500;
+            font-size: 1.5rem;
         }
-
-        .navbar-brand:hover {
-            color: var(--text-secondary);
-        }
-
         .navbar-nav .nav-link {
             color: var(--text-secondary);
             font-weight: 500;
-            margin-left: 1.5rem;
-            transition: color 0.3s ease;
+            margin-left: 1rem;
         }
-
         .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
             color: var(--text-primary);
         }
-
         .navbar-toggler {
             border: none;
-            padding: 0.25rem 0.75rem;
         }
-
         .navbar-toggler-icon {
             filter: invert(1);
-            width: 1.5em;
-            height: 1.5em;
         }
-
-        main.container {
-            max-width: 800px;
-            text-align: center;
-            padding: 6rem 1rem 2rem;
+        .container {
+            max-width: 800px; 
+            padding: 2rem 1rem;
+            margin-top: 60px; 
             flex: 1 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center; 
+            height: calc(100vh - 120px); 
+            text-align: center;
         }
 
         h1 {
             color: var(--text-primary);
             font-weight: 700;
-            font-size: 3.5rem;
+            font-size: 4.5rem; /* Increased font size */
             margin-bottom: 1.5rem;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s ease;
@@ -112,21 +103,19 @@ $current_year = date("Y");
 
         p.lead {
             color: var(--text-secondary);
-            font-size: 1.3rem;
+            font-size: 1.5rem; /* Increased font size */
             margin-bottom: 2.5rem;
             line-height: 1.8;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            max-width: 800px; /* Increased width */
         }
 
         .btn-primary {
             background-color: var(--accent);
             border: none;
             border-radius: 8px;
-            padding: 1rem 2.5rem;
+            padding: 1.2rem 3rem; /* Increased padding */
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1.4rem; /* Increased font size */
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: all 0.3s ease;
@@ -145,21 +134,25 @@ $current_year = date("Y");
             padding: 1rem;
             text-align: center;
             width: 100%;
-            margin-top: auto;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
         }
 
         @media (max-width: 576px) {
-            main.container {
+            .container {
                 padding: 5rem 0.5rem 1rem;
             }
 
             h1 {
-                font-size: 2.5rem;
+                font-size: 3rem; /* Adjusted for mobile */
             }
 
             p.lead {
-                font-size: 1.1rem;
+                font-size: 1.2rem; /* Adjusted for mobile */
+            }
+
+            .btn-primary {
+                padding: 1rem 2rem;
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -168,20 +161,20 @@ $current_year = date("Y");
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <a class="navbar-brand" href="index.php"><?php echo $site_name; ?></a>
+            <a class="navbar-brand" href="landing.php">PHP Activities</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.php">Home</a>
+                        <a class="nav-link" href="landing.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="dashboard.php">Dashboard</a>
+                        <a class="nav-link" href="me.php">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="about.php">About</a>
+                        <a class="nav-link active" href="about.php">About</a>
                     </li>
                 </ul>
             </div>
