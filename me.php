@@ -161,17 +161,12 @@
         .instruction-container p {
             margin: 0.5rem 0;
         }
-        .instruction-container hr {
-            border-color: #ccc;
-        }
-        .instruction-container .intro-text {
-            font-style: italic;
-            color: #666;
-        }
         .output-container {
             padding: 15px;
             border-radius: 8px;
-            color: var(--text-primary);
+            background: #f1f1f1;
+            color: #333;
+            margin-bottom: 1rem;
         }
         .modal-footer {
             border-top: none;
@@ -230,7 +225,7 @@
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="landing.php">PHP Activities</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Close">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
@@ -354,24 +349,66 @@
 
                 buttons.forEach(button => {
                     button.addEventListener('click', function (e) {
-                        e.preventDefault(); // Prevent default navigation
+                        e.preventDefault();
                         const activityName = button.getAttribute('data-activity');
                         const labName = modal.querySelector('.modal-title').textContent.replace(' Activities', '');
 
-                        // Display formatted instruction with white background
-                        instructionContainer.innerHTML = `
-                            <h6>${pathinfo(activityName, 'filename')}</h6>
-                            <p>Placeholder: Create a PHP script related to ${pathinfo(activityName, 'filename')}. Replace this with the actual problem instruction.</p>
-                            <hr>
-                            <p class="intro-text">Introduction to PHP</p>
-                            <p>By: John Doe</p>
-                            <p>PHP (Hypertext Preprocessor) is a widely used server-side scripting language that has revolutionized web development. With its simplicity, flexibility, and vast community support, PHP has become the backbone of countless dynamic websites and web applications.</p>
-                        `;
+                        // Construct the file path
+                        const filePath = `${labName.toLowerCase().replace(' ', '')}/${activityName}`;
+                        
+                        // Fetch the content dynamically
+                        fetch(filePath)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('File not found');
+                                }
+                                return response.text();
+                            })
+                            .then(data => {
+                                // Extract instruction from PHP comment block
+                                let instructionText = '';
+                                const instructionMatch = data.match(/\/\*\s*Instructions\s*([\s\S]*?)\*\//i);
+                                if (instructionMatch) {
+                                    instructionText = instructionMatch[1].trim().replace(/\s+/g, ' ');
+                                } else {
+                                    instructionText = `Placeholder: Create a PHP script related to ${pathinfo(activityName, 'filename')}. Replace this with the actual problem instruction.`;
+                                }
 
-                        // Clear output container
-                        outputContainer.innerHTML = '';
+                                // Extract output from <main> tags
+                                let outputText = '';
+                                const mainMatch = data.match(/<main>([\s\S]*?)<\/main>/i);
+                                if (mainMatch) {
+                                    outputText = mainMatch[1].trim();
+                                } else {
+                                    // If no <main> tags, use the entire content or a placeholder
+                                    outputText = data.trim() || `Placeholder Output: This is a sample output for ${pathinfo(activityName, 'filename')}. Replace with actual output.`;
+                                }
+
+                                // Display formatted instruction
+                                instructionContainer.innerHTML = `
+                                    <h6>${pathinfo(activityName, 'filename')}</h6>
+                                    <p>${instructionText}</p>
+                                `;
+
+                                // Display output
+                                outputContainer.innerHTML = outputText;
+                            })
+                            .catch(error => {
+                                // Fallback if fetch fails
+                                instructionContainer.innerHTML = `
+                                    <h6>${pathinfo(activityName, 'filename')}</h6>
+                                    <p>Placeholder: Create a PHP script related to ${pathinfo(activityName, 'filename')}. Replace this with the actual problem instruction.</p>
+                                `;
+                                outputContainer.innerHTML = `Placeholder Output: This is a sample output for ${pathinfo(activityName, 'filename')}. Replace with actual output.`;
+                            });
                     });
                 });
+
+                // Trigger the first button click to show initial content
+                const firstButton = buttons[0];
+                if (firstButton) {
+                    firstButton.click();
+                }
             });
 
             // Helper function to mimic PHP's pathinfo
